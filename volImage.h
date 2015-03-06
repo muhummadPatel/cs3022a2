@@ -27,7 +27,8 @@ class VolImage{
         //number of bytes used to store image data bytes and pointers
         //(ignore vector,. container, dims, etc.)
         int volImageSize(void);
-}
+};
+
 }
 
 #endif

@@ -22,11 +22,11 @@ namespace ptlmuh006{
         //cout << "readImages(" << baseName << ")" << endl;
         
         //read dat file and get dimensions
-        int slices;
+        int numslices;
         ifstream hdr(baseName + ".dat");
         hdr >> width;
         hdr >> height;
-        hdr >> slices;
+        hdr >> numslices;
         /*
         cout << "w " << width << endl;
         cout << "h " << height << endl;
@@ -35,16 +35,26 @@ namespace ptlmuh006{
         
         //for each slice
         //read into slice
-        for(int slice = 0; slice < slices; slices++){
+        for(int slice = 0; slice < numslices; slice++){
             ostringstream oss;
             oss << baseName << slice << ".raw";
-            ifstream s(oss.str());
+            ifstream slcfile(oss.str(), ios::binary);
+            
+            cout << oss.str() << endl;
+            
+            unsigned char ** rowsArr = new unsigned char * [height];
             for(int row = 0; row < height; row++){
+            
+                rowsArr[row] = new unsigned char [width];
                 for(int col = 0; col < width; col++){
-                        
+                    slcfile >> rowsArr[row][col];
                 }
             }
+            slcfile.close();            
+            slices.push_back(rowsArr);
         }
+        
+        cout << "loaded: " << slices.size() << endl;
         
         /*
         ifstream in(baseName, ios::binary);

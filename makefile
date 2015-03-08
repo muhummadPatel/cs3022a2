@@ -1,5 +1,5 @@
 CPP=g++
-CPPFLAGS=-std=c++11
+CPPFLAGS=-std=c++11 -g
 EXE_NAME=volimage
 
 $(EXE_NAME): volImage.o driver.o 

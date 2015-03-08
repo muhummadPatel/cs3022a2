@@ -1,5 +1,6 @@
 brain_mri_raws/
 MRI_originals_png/
+smallTest/
 *.raw
 *.dat
 viewer.py

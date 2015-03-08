@@ -47,7 +47,21 @@ namespace ptlmuh006{
     }
     
     VolImage::~VolImage(){
-        //cout << "~VolImage()" << endl;
+        cout << "~VolImage() "<< slices.size() << endl;
+        for(int i = 0; i < slices.size(); i++){
+            cout << "destruct slice " << i << endl;
+            unsigned char ** rowsArr = slices[i]; 
+            for(int row = 0; row < height; row++){
+                cout << "del ";
+                delete [] rowsArr[row];
+            }
+            
+            cout << "del ";
+            delete [] rowsArr;
+        }
+        cout << endl;
+        slices.clear();
+        cout << slices.size() << endl;
     }
     
     bool VolImage::readImages(std::string baseName){
@@ -60,9 +74,12 @@ namespace ptlmuh006{
         cout << "w " << width << endl;
         cout << "h " << height << endl;
         cout << "s " << numslices << endl;
+        hdr.close();
         
         //for each slice
         //read into slice
+        
+        
         for(int slice = 0; slice < numslices; slice++){
             ostringstream oss;
             oss << baseName << slice << ".raw";
@@ -70,23 +87,27 @@ namespace ptlmuh006{
             
             cout << oss.str() << endl;
             
+            cout << "new ";
             unsigned char ** rowsArr = new unsigned char * [height];
             for(int row = 0; row < height; row++){
             
+                cout << "new ";
                 rowsArr[row] = new unsigned char [width];
                 slcfile.read((char*)rowsArr[row], (sizeof(unsigned char) * width));
-                /*
-                for(int col = 0; col < width; col++){
-                    slcfile >> rowsArr[row][col];
-                }
-                */
+                
             }
-            slcfile.close();            
+            cout << endl;
+            slcfile.close();
             slices.push_back(rowsArr);
+            
+            //for(int row = 0; row < height; row++){
+            //    delete[] rowsArr[row];
+            //}
+            //delete [] rowsArr;
         }
         
         cout << "loaded: " << slices.size() << endl;
-        printSlice(slices[4], width, height);
+        //printSlice(slices[4], width, height);
         cout << sizeof(unsigned char) << endl;
         
         return true;

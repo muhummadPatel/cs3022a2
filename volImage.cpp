@@ -160,5 +160,33 @@ namespace ptlmuh006{
         
         cout << "diffmapped" << endl;
     }
+    
+    void VolImage::
+    extractRow(int row, std::string output_prefix){
+        ostringstream prefix;
+        prefix << output_prefix << "_extractRow_" << row;
+        
+        ofstream hdr(prefix.str() + ".dat");//, ios::trunc);
+        //TODO: check that the height really is slices.size()
+        hdr << width << " " << slices.size() << " " << 1 << endl;
+        hdr.close();
+        
+        unsigned char ** extracted;
+        for(int slice = 0; slice < slices.size(); slice++){
+             extracted[slice] = slices[slice][row];
+        }
+        
+        //write extracted data to output file
+        ofstream out(prefix.str() + ".raw", ios::binary); //| ios::trunc);
+        for(int slice = 0; slice < slices.size(); slice++){
+            for(int row = 0; row < height; row++){
+                out.write((char *)extracted[slice]
+                , (sizeof(unsigned char) * width));
+            }
+        }
+        out.close();
+        
+        cout << "written" << endl;
+    }
 
 }

@@ -24,6 +24,9 @@ class VolImage{
         //extract slice sliceId and write to output
         void extract(int sliceId, std::string output_prefix);
         
+        //extract an image along row i of the volume, across all slices
+        void extractRow(int row, std::string output_prefix);
+        
         //number of bytes used to store image data bytes and pointers
         //(ignore vector,. container, dims, etc.)
         int volImageSize(void);

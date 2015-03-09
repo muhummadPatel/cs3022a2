@@ -12,8 +12,9 @@ int main(int argc, char* argv[]){
     std::string base = "MRI";//argv[1];
     vi.readImages(base);
     
-    vi.extract(4, "extracted");
-    vi.diffmap(2, 3, "diffed");
+    //vi.extract(4, "extracted");
+    //vi.diffmap(2, 3, "diffed");
+    vi.extractRow(150, "rEXtr");
     
     
     //new code

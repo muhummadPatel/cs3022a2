@@ -4,3 +4,4 @@ smallTest/
 *.raw
 *.dat
 viewer.py
+diffmap.py

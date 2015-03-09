@@ -10,6 +10,8 @@ int main(int argc, char* argv[]){
     
     std::string base = argv[1];
     vi.readImages(base);
+    
+    vi.extract(4, "extracted");
     }
     
     /*

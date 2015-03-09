@@ -153,6 +153,11 @@ namespace ptlmuh006{
         }
         out.close();
         
+        for(int row = 0; row < height; row++){
+            delete [] diffmapArr[row];
+        }
+        delete [] diffmapArr;
+        
         cout << "diffmapped" << endl;
     }
 

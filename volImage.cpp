@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -130,8 +131,29 @@ namespace ptlmuh006{
         cout << "written" << endl;
     }
     
-    void diffmap(int sliceI, int sliceJ, std::string output_prefix){
+    void VolImage::diffmap(int sliceI, int sliceJ, std::string output_prefix){
+        ostringstream prefix;
+        prefix << output_prefix << "_diff_" << sliceI << "_" << sliceJ;
         
+        ofstream hdr(prefix.str() + ".dat");//, ios::trunc);
+        hdr << width << " " << height << " " << 1 << endl;
+        hdr.close();
+        
+        unsigned char ** diffmapArr = new unsigned char * [height];
+        for(int row = 0; row < height; row++){
+            diffmapArr[row] = new unsigned char [width];
+            for(int col = 0; col < width; col++){
+                diffmapArr[row][col] = (unsigned char)(abs((float)slices[sliceI][row][col] - (float)slices[sliceJ][row][col])/2);
+            }
+        }
+        
+        ofstream out(prefix.str() + ".raw", ios::binary); //| ios::trunc);
+        for(int row = 0; row < height; row++){
+            out.write((char *)diffmapArr[row], (sizeof(unsigned char) * width));
+        }
+        out.close();
+        
+        cout << "diffmapped" << endl;
     }
 
 }

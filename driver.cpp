@@ -26,10 +26,18 @@ int main(int argc, char* argv[]){
     }else if(argc == 2){
         //just load data and exit
         std::cout << "load data and exit" << std::endl;
-        vi.readImages(argv[1]);
+        bool success = vi.readImages(argv[1]);
+        if(!success){
+            std::cout << "Error reading in data." << std::endl;
+            return 1;
+        }
         
     }else{
-        vi.readImages(argv[1]);
+        bool success = vi.readImages(argv[1]);
+        if(!success){
+            std::cout << "Error reading in data." << std::endl;
+            return 1;
+        }
         
         //handle flags        
         std::string flag = std::string(argv[2]);
@@ -41,17 +49,33 @@ int main(int argc, char* argv[]){
             
             vi.diffmap(sliceI, sliceJ, output_prefix);
             
+            std::cout << "Difference-map between slice ";
+            std::cout << sliceI << " and " << sliceJ;
+            std::cout << " computed and written to ";
+            std::cout << output_prefix << ".dat and ";
+            std::cout << output_prefix << ".raw." << std::endl;
+            
         }else if(flag == "-x" && argc == 5){
             int slice = std::stoi(argv[3]);
             std::string output_prefix = argv[4];
             
             vi.extract(slice, output_prefix);
             
+            std::cout << "Extracted slice " << slice;
+            std::cout << " and wrote it to ";
+            std::cout << output_prefix << ".dat and ";
+            std::cout << output_prefix << ".raw." << std::endl;
+            
         }else if(flag == "-g" && argc == 5){
             int row = std::stoi(argv[3]);
             std::string output_prefix = argv[4];
             
             vi.extractRow(row, output_prefix);
+            
+            std::cout << "Extracted row " << row;
+            std::cout << " across all slices and wrote it to ";
+            std::cout << output_prefix << ".dat and ";
+            std::cout << output_prefix << ".raw." << std::endl;
             
         }else{
             handleInvalidArgs();

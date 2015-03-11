@@ -48,6 +48,18 @@ namespace ptlmuh006{
     }
     
     VolImage::~VolImage(){
+        int size = sizeof(slices);
+        for(int i = 0; i < slices.size(); i++){
+            size += sizeof(unsigned char **);
+            for(int row = 0; row < height; row++){
+                size += sizeof(unsigned char *);
+                size += (sizeof(unsigned char) * width);
+            }
+        }
+        
+        std::cout << "Number of images: " << slices.size() << std::endl;
+        std::cout << "Number of bytes required: " << size << std::endl;
+        
         for(int i = 0; i < slices.size(); i++){
             unsigned char ** rowsArr = slices[i]; 
             for(int row = 0; row < height; row++){
@@ -55,6 +67,7 @@ namespace ptlmuh006{
             }
             delete [] rowsArr;
         }
+        
         slices.clear();
     }
     
@@ -71,15 +84,19 @@ namespace ptlmuh006{
             oss << baseName << slice << ".raw";
             ifstream slcfile(oss.str(), ios::binary);
             
-            unsigned char ** rowsArr = new unsigned char * [height];
-            for(int row = 0; row < height; row++){
-            
-                rowsArr[row] = new unsigned char [width];
-                slcfile.read((char*)rowsArr[row], (sizeof(unsigned char) * width));
+            if(slcfile){
+                unsigned char ** rowsArr = new unsigned char * [height];
+                for(int row = 0; row < height; row++){
                 
+                    rowsArr[row] = new unsigned char [width];
+                    slcfile.read((char*)rowsArr[row], (sizeof(unsigned char) * width));
+                    
+                }
+                slcfile.close();
+                slices.push_back(rowsArr); 
+            }else{
+                return false;
             }
-            slcfile.close();
-            slices.push_back(rowsArr); 
         }
         
         return true;
@@ -97,15 +114,10 @@ namespace ptlmuh006{
             out.write((char *)slices[sliceId][row], (sizeof(unsigned char) * width));
         }
         out.close();
-        
-        cout << "written" << endl;
     }
     
     void VolImage::diffmap(int sliceI, int sliceJ, std::string output_prefix){
-        ostringstream prefix;
-        prefix << output_prefix << "_diff_" << sliceI << "_" << sliceJ;
-        
-        ofstream hdr(prefix.str() + ".dat");
+        ofstream hdr(output_prefix + ".dat");
         hdr << width << " " << height << " " << 1 << endl;
         hdr.close();
         
@@ -117,7 +129,7 @@ namespace ptlmuh006{
             }
         }
         
-        ofstream out(prefix.str() + ".raw", ios::binary);
+        ofstream out(output_prefix + ".raw", ios::binary);
         for(int row = 0; row < height; row++){
             out.write((char *)diffmapArr[row], (sizeof(unsigned char) * width));
         }
@@ -127,13 +139,12 @@ namespace ptlmuh006{
             delete [] diffmapArr[row];
         }
         delete [] diffmapArr;
-        
-        cout << "diffmapped" << endl;
     }
     
     void VolImage::extractRow(int row, std::string output_prefix){
-        ostringstream prefix;
-        prefix << output_prefix << "_extrRow_" << row;
+        ofstream hdr(output_prefix + ".dat");
+        hdr << width << " " << slices.size() << " " << 1 << endl;
+        hdr.close();
         
         unsigned char ** extracted = new unsigned char * [slices.size()];
         int currRow = 0;
@@ -143,19 +154,14 @@ namespace ptlmuh006{
             currRow++;
         }
         
-        ofstream hdr(prefix.str() + ".dat");
-        hdr << width << " " << slices.size() << " " << 1 << endl;
-        hdr.close();
-        
         //write extracted slice to output file
-        ofstream out(prefix.str() + ".raw", ios::binary);
+        ofstream out(output_prefix + ".raw", ios::binary);
         for(int row = 0; row < slices.size(); row++){
             out.write((char *)extracted[row], (sizeof(unsigned char) * width));
         }
         out.close();
         
         delete [] extracted;
-        cout << "written row extract" << endl;
     }
 
 }

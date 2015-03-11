@@ -161,32 +161,31 @@ namespace ptlmuh006{
         cout << "diffmapped" << endl;
     }
     
-    void VolImage::
-    extractRow(int row, std::string output_prefix){
+    void VolImage::extractRow(int row, std::string output_prefix){
         ostringstream prefix;
-        prefix << output_prefix << "_extractRow_" << row;
+        prefix << output_prefix << "_extrRow_" << row;
+        
+        unsigned char ** extracted = new unsigned char * [slices.size()];
+        int currRow = 0;
+        for(int slice = 0; slice < slices.size(); slice++){
+            unsigned char ** rowsArr = slices[slice];
+            extracted[currRow] = rowsArr[row];
+            currRow++;
+        }
         
         ofstream hdr(prefix.str() + ".dat");//, ios::trunc);
-        //TODO: check that the height really is slices.size()
         hdr << width << " " << slices.size() << " " << 1 << endl;
         hdr.close();
         
-        unsigned char ** extracted;
-        for(int slice = 0; slice < slices.size(); slice++){
-             extracted[slice] = slices[slice][row];
-        }
-        
-        //write extracted data to output file
+        //write extracted slice to output file
         ofstream out(prefix.str() + ".raw", ios::binary); //| ios::trunc);
-        for(int slice = 0; slice < slices.size(); slice++){
-            for(int row = 0; row < height; row++){
-                out.write((char *)extracted[slice]
-                , (sizeof(unsigned char) * width));
-            }
+        for(int row = 0; row < slices.size(); row++){
+            out.write((char *)extracted[row], (sizeof(unsigned char) * width));
         }
         out.close();
         
-        cout << "written" << endl;
+        delete [] extracted;
+        cout << "written row extract" << endl;
     }
 
 }

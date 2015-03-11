@@ -11,12 +11,13 @@ int main(int argc, char* argv[]){
     
     std::string base = "MRI";//argv[1];
     vi.readImages(base);
-    
+    std::cout << "READ IMAGES" << std::endl;
     //vi.extract(4, "extracted");
     //vi.diffmap(2, 3, "diffed");
-    vi.extractRow(150, "rEXtr");
-    
-    
+    vi.extractRow(5, "rEXtr");
+    std::cout << "Row extract" << std::endl;
+
+    /*
     //new code
     if(argc < 2){
         //invalid usage
@@ -37,6 +38,7 @@ int main(int argc, char* argv[]){
             std::cout << "nvalid usage" << std::endl;
         }
     }
+*/
     
     return 0;
 }

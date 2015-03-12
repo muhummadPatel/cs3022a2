@@ -1,3 +1,9 @@
+/*
+ * Definition of the volimage class.
+ * Muhummad Patel       PTLMUH006
+ * 16 - March - 2015
+ */
+
 #ifndef VOLIMAGE_H
 #define VOLIMAGE_H
 
@@ -6,10 +12,18 @@
 
 namespace ptlmuh006{
 
+typedef unsigned char u_char;
+
+/*
+ The VolImage class loads and manipulates volumetric image data(eg. MRI scan 
+ data). A vector of slices stores the data for each image in the sequence as
+ a 2d unsigned char array.
+*/
 class VolImage{
+    
     private:
         int width, height; //width and height of image stack
-        std::vector<unsigned char**> slices; //data for each slice in order
+        std::vector<u_char **> slices; //data for each slice in order
         
     public:
         VolImage(); //default constructor

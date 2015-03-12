@@ -1,8 +1,15 @@
+/*
+ * Main class.
+ * Muhummad Patel       PTLMUH006
+ * 16 - March - 2015
+ */
+
 #include <iostream>
 #include <sstream>
 
 #include "volImage.h"
 
+//Prints correct usage to cout
 void handleInvalidArgs(){
     using namespace std;
     
@@ -19,35 +26,37 @@ void handleInvalidArgs(){
 int main(int argc, char* argv[]){
     using namespace ptlmuh006;
     
-    VolImage vi;
+    VolImage volimg;
     if(argc < 2){
+        //Invalid usage
         handleInvalidArgs();
         
     }else if(argc == 2){
-        //just load data and exit
-        std::cout << "load data and exit" << std::endl;
-        bool success = vi.readImages(argv[1]);
+        //Just load data and exit        
+        bool success = volimg.readImages(argv[1]);
         if(!success){
             std::cout << "Error reading in data." << std::endl;
             return 1;
         }
         
     }else{
-        bool success = vi.readImages(argv[1]);
+        bool success = volimg.readImages(argv[1]);
         if(!success){
             std::cout << "Error reading in data." << std::endl;
             return 1;
         }
         
-        //handle flags        
+        //Handle flags        
         std::string flag = std::string(argv[2]);
         
         if(flag == "-d" && argc == 6){
+            //Handle diffmap option
+            
             int sliceI = std::stoi(argv[3]);
             int sliceJ = std::stoi(argv[4]);
             std::string output_prefix = argv[5];
             
-            vi.diffmap(sliceI, sliceJ, output_prefix);
+            volimg.diffmap(sliceI, sliceJ, output_prefix);
             
             std::cout << "Difference-map between slice ";
             std::cout << sliceI << " and " << sliceJ;
@@ -56,10 +65,12 @@ int main(int argc, char* argv[]){
             std::cout << output_prefix << ".raw." << std::endl;
             
         }else if(flag == "-x" && argc == 5){
+            //Handle extract option
+        
             int slice = std::stoi(argv[3]);
             std::string output_prefix = argv[4];
             
-            vi.extract(slice, output_prefix);
+            volimg.extract(slice, output_prefix);
             
             std::cout << "Extracted slice " << slice;
             std::cout << " and wrote it to ";
@@ -67,10 +78,12 @@ int main(int argc, char* argv[]){
             std::cout << output_prefix << ".raw." << std::endl;
             
         }else if(flag == "-g" && argc == 5){
+            //Handle row extract option
+            
             int row = std::stoi(argv[3]);
             std::string output_prefix = argv[4];
             
-            vi.extractRow(row, output_prefix);
+            volimg.extractRow(row, output_prefix);
             
             std::cout << "Extracted row " << row;
             std::cout << " across all slices and wrote it to ";
@@ -78,6 +91,7 @@ int main(int argc, char* argv[]){
             std::cout << output_prefix << ".raw." << std::endl;
             
         }else{
+            //Invalid usage
             handleInvalidArgs();
         }
     }

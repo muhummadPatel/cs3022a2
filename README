@@ -1,0 +1,19 @@
+Author	: Muhummad Yunus Patel
+Student#	: PTLMUH006
+Date		: 16-March-2015
+
+Name		: Assignment 2 - Volimage
+
+Description	: 
+A description of what each file does and how it fits into the program follows:
+>volimage.h volimage.cpp: These files follow the mandated structure set out in the assignment brief. They handle the reading, storage and manipulation of the volumetric image data. The image data is stored in a vector of 2d unsigned char arrays. Note, that when the destructor is called, the number of bytes used to store the images (including pointers) will be output to the console.
+
+>driver.cpp: This file contains the main method and uses volimage.h and volimage.cpp to read in the volumetric image data specified by the command line arguments and execute the option requested in the command line arguments. NOTE that the extra credit functionality has also been included. The command line argument parsing happens here.
+
+Usage:
+Note, only one operation can be performed at a time.
+./volimage <imageBase> [-d sliceI sliceJ output_file_name] [-x slice output_file_name] [-g row output_file_name]
+
+To compile, simply type make.
+To run, ./volimage <imageBase> [-d sliceI sliceJ output_file_name] [-x slice output_file_name] [-g row output_file_name]
+To clean up, type make clean.

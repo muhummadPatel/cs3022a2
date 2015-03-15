@@ -12,6 +12,7 @@ A description of what each file does and how it fits into the program follows:
 
 Usage:
 Note, only one operation can be performed at a time.
+Please have the volumetric image data (MRI.dat and MRI<i>.raw) files in the same directory when running.
 ./volimage <imageBase> [-d sliceI sliceJ output_file_name] [-x slice output_file_name] [-g row output_file_name]
 
 To compile, simply type make.

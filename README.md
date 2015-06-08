@@ -1,8 +1,8 @@
-**Author**	: Muhummad Yunus Patel
-**Student#**	: PTLMUH006
-**Date**		: 16-March-2015
-
 ##Assignment 2 - _Volimage_
+
+**Author**	: Muhummad Yunus Patel  
+**Student#**	: PTLMUH006  
+**Date**		: 16-March-2015  
 
 ###Description	: 
 A description of what each file does and how it fits into the program follows:
